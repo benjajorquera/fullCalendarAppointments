@@ -18,7 +18,6 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
 import axios from "axios";
-import { ContextReplacementPlugin } from "webpack";
 
 export default {
     components: {
