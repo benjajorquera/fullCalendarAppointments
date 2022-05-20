@@ -6,7 +6,6 @@ use App\Models\Appointment;
 use Illuminate\Http\Request;
 use App\Http\Resources\AppointmentResource;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class AppointmentController extends Controller
 {
@@ -17,7 +16,7 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        
+
         #$appointments = Appointment::all();
         #return $appointments;
         return AppointmentResource::collection(Appointment::all());
@@ -63,7 +62,7 @@ class AppointmentController extends Controller
 
         #$appointment->startTime = $request->date;
         $appointment->startTime = $appointment->date->toTimeString();
-        
+
         $appointment->contact = $request->contact;
         $appointment->save();
         return $appointment;
@@ -133,13 +132,14 @@ class AppointmentController extends Controller
      * @param  \App\Models\Appointment  $appointment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Appointment $appointment)
+    public function destroy($id)
     {
-        $appointment = Appointment::destroy($request->id);
+        $appointment = Appointment::destroy($id);
         return $appointment;
     }
 
-    public function findByDate($date) {
+    public function findByDate($date)
+    {
         #$appointments = DB::table('appointments')->whereDate('date', '=', date($date))->get();
         #return $appointments;
         return AppointmentResource::collection(DB::table('appointments')->whereDate('date', '=', date($date))->get());
