@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->dateTime("date")->unique();
             $table->time("startTime");
-            $table->string("contact");
+            $table->string("contact")->unique();
             $table->timestamps();
         });
     }

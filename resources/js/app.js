@@ -1,9 +1,12 @@
-require('./bootstrap');
+require("./bootstrap");
 
-import CalendarComponent from './components/CalendarComponent.vue';
-import { createApp } from 'vue';
+import CalendarComponent from "./Components/CalendarComponent.vue";
+import Navbar from "./Components/Navbar.vue";
+
+import { createApp } from "vue";
 
 const app = createApp({});
 
-app.component('calendar', CalendarComponent);
-app.mount('#app');
+app.component("Navbar", Navbar).component("Calendar", CalendarComponent);
+
+app.mount("#app");

@@ -20,7 +20,8 @@
         "@fullcalendar/daygrid": "^5.11.0",
         "@fullcalendar/interaction": "^5.11.0",
         "@fullcalendar/vue3": "^5.11.1",
-        "vue": "^3.2.33",
+        "bootstrap-vue": "^2.22.0",
+        "vue": "^3.2.34",
         "vue-loader": "^17.0.0"
     }
 }

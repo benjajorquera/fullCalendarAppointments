@@ -1,7 +1,15 @@
 <template>
-    <div>
-        <FullCalendar ref="fullCalendar" :options="calendarOptions" />
-    </div>
+    <body class="pt-5">
+        <div class="container">
+            <h3>Welcome</h3>
+            <h4>
+                Click on any date and available hour to schedule a Dance with
+                Death
+            </h4>
+            <h5>Click an event and confirm to delete it</h5>
+            <FullCalendar ref="fullCalendar" :options="calendarOptions" />
+        </div>
+    </body>
 </template>
 <script>
 import "@fullcalendar/core/vdom"; // solves problem with Vite
@@ -10,6 +18,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
 import axios from "axios";
+import { ContextReplacementPlugin } from "webpack";
 
 export default {
     components: {
@@ -50,46 +59,87 @@ export default {
                 this.calendarOptions.eventSources.push({
                     events: events,
                     color: "grey",
+                    id: 1,
                 });
             });
         },
         handleEventClick: function (args) {
-            if (args.event.title !== "Available")
-                alert("Appointment not available");
-            else {
-                let calendarApi = this.$refs.fullCalendar.getApi();
-                var contact = prompt("Enter email");
-                if (contact === null) return;
-                if (contact === "") alert("Email can't be empty");
-                else if (!contact.match(/^\S+@\S+\.\S+$/))
-                    alert("Email not valid");
-                else {
+            if (args.event.title !== "Available") {
+                var option = confirm(
+                    "Appointment not available for schedule.\n\nDelete event?"
+                );
+                if (option) {
+                    let calendarApi = this.$refs.fullCalendar.getApi();
                     axios
-                        .post("/api/appointments", {
-                            date: args.event.start
-                                .toISOString()
-                                .replace("Z", ""),
-                            contact: contact,
-                        })
+                        .delete("/api/appointments/" + args.event.id)
                         .then((response) => {
+                            if (this.calendarOptions.eventSources.length < 2) {
+                                args.event.remove();
+                                return;
+                            }
+
+                            if (
+                                args.event.start
+                                    .toISOString()
+                                    .substring(0, 10) ===
+                                this.calendarOptions.eventSources[1].clickDate
+                            ) {
+                                calendarApi.addEvent(
+                                    {
+                                        title: "Available",
+                                        start: args.event.start,
+                                    },
+                                    2
+                                );
+                            }
                             args.event.remove();
-                            calendarApi.addEvent(
-                                {
-                                    id: response.data.id,
-                                    title: contact,
-                                    start: response.data.date.replace("Z", ""),
-                                },
-                                true
-                            );
                         })
                         .catch(function (error) {
                             console.log(error);
                         });
                 }
+            } else {
+                let calendarApi = this.$refs.fullCalendar.getApi();
+                while (true) {
+                    var contact = prompt("Enter email to schedule\n");
+                    if (contact === null) return;
+                    else if (contact === "") alert("Email can't be empty");
+                    else if (!contact.match(/^\S+@\S+\.\S+$/))
+                        alert("Email not valid");
+                    else break;
+                }
+                axios
+                    .post("/api/appointments", {
+                        date: args.event.start.toISOString().replace("Z", ""),
+                        contact: contact,
+                    })
+                    .then((response) => {
+                        args.event.remove();
+                        calendarApi.addEvent(
+                            {
+                                id: response.data.id,
+                                title: contact,
+                                start: response.data.date.replace("Z", ""),
+                            },
+                            true
+                        );
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             }
         },
 
         handleDateClick: function (args) {
+            if (this.calendarOptions.eventSources.length > 1) {
+                if (
+                    this.calendarOptions.eventSources[1].clickDate ==
+                    args.dateStr
+                ) {
+                    this.calendarOptions.eventSources.pop();
+                    return;
+                }
+            }
             const events = [];
             axios
                 .get("/api/appointments/findByDate/" + args.dateStr)
@@ -115,6 +165,8 @@ export default {
                     this.calendarOptions.eventSources.push({
                         events: events,
                         color: "green",
+                        id: 2,
+                        clickDate: args.dateStr,
                     });
                 })
                 .catch(function (error) {
