@@ -6,6 +6,7 @@ use App\Models\Appointment;
 use Illuminate\Http\Request;
 use App\Http\Resources\AppointmentResource;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class AppointmentController extends Controller
 {
@@ -60,7 +61,9 @@ class AppointmentController extends Controller
             return json_encode("Not only one hour appointment");
         }
 
-        $appointment->startTime = $request->date;
+        #$appointment->startTime = $request->date;
+        $appointment->startTime = $appointment->date->toTimeString();
+        
         $appointment->contact = $request->contact;
         $appointment->save();
         return $appointment;

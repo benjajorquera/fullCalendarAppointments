@@ -77,7 +77,7 @@ export default {
                                 {
                                     id: response.data.id,
                                     title: contact,
-                                    start: response.data.startTime,
+                                    start: response.data.date.replace("Z", ""),
                                 },
                                 true
                             );
