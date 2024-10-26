@@ -1,56 +1,85 @@
 # Full Calendar Appointments App
 
+An appointment system built with **Laravel 9**, **VueJS 3**, and **FullCalendar 5**.
+
 ## Installation guide (Windows)
 
-### Programs
+### Prerequisites
 
-Download and install PHP, Composer, Node and NPM.
+Before you begin, ensure you have the following software installed on your system:
 
-- PHP: Download php from the official website, make sure that the php command is set in your system PATH global environment variables.
-- Composer: Download the installer from the official website, which will recognize PHP on the system and create the php.ini file for the settings.
+1. **PHP**: Download from the [official PHP website](https://www.php.net/downloads). Ensure the `php` command is available in your system's PATH environment variable.
+2. **Composer**: Download the installer from the [official Composer website](https://getcomposer.org/download/). This will recognize PHP on your system and create the `php.ini` file for settings.
+3. **Node.js and NPM**: Download and install from the [official Node.js website](https://nodejs.org/).
 
-Open a terminal and run the following to install Laravel:
+### Step 1: Install Laravel
 
-````composer global require laravel/installer````
+Open your terminal and run the following command to install Laravel globally:
 
-### Libraries
+```
+composer global require laravel/installer
+```
 
-````npm install````\
-````composer install````
+### Step 2: Install Dependencies
 
-WARNING: If you have problems installing the libraries with Composer, you can try one of these options:
+Navigate to your project directory and install the required libraries:
 
-- Delete the composer.lock file
+```
+npm install
+composer install
+```
+
+### Troubleshooting Composer Installations
+
+If you encounter issues while installing libraries with Composer, try the following solutions:
+
+- Delete the ````composer.lock```` file
 - Run ````composer upgrade```` or ````composer update````
-- Open the php.init file (you can find it by running ````php --ini````, if not found, reinstall PHP and Composer) and activate the extension fileinfo (uncomment the line ````extension=fileinfo````)
+- Open the ````php.init```` file (you can find it by running ````php --ini````, if not found, reinstall PHP and Composer) and activate the extension ````fileinfo```` (uncomment the line ````extension=fileinfo````)
 
-Run composer install again.
+Run ````composer install```` again.
 
-## Running the app
+## Running the App
 
-Rename the .env.example file to .env and execute the following command:
+### Step 1: Configure Environment
+
+Rename the ````.env.example```` file to ````.env```` and execute the following command:
 
 ````composer run post-create-project-cmd````
 
-### Configure the database (mysql)
+### Step 2: Configure the Database (MySQL)
 
-- Uncomment the extension=pdo_mysql option to activate the extension.
-- Create a database, e.g. in the mysql terminal: create database full_calendar
-- Configure the database in your .env file, e.g:
+- Uncomment the ````extension=pdo_mysql```` option in your ````php.ini```` file to activate the extension.
+- Create a database, e.g. in the mysql terminal: ````create database full_calendar````
+- Configure the database in your ````.env```` file, e.g:
 
+```
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=full_calendar
 DB_USERNAME=root
 DB_PASSWORD=password
+```
 
 Migrate the database with ````php artisan migrate````
 
-Finally, you can run the project on two different terminals
+### Step 3: Start the Project
 
-npm run dev or npm run watch
+You can run the project using two separate terminal instances:
+
+- For the frontend:
+```
+npm run dev
+```
+or
+```
+npm run watch
+```
+- For the backend:
+```
 php artisan serve
+```
 
 ## License
 
