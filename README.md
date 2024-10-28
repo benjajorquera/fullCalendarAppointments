@@ -36,6 +36,7 @@ If you encounter issues while installing libraries with Composer, try the follow
 - Delete the ````composer.lock```` file
 - Run ````composer upgrade```` or ````composer update````
 - Open the ````php.init```` file (you can find it by running ````php --ini````, if not found, reinstall PHP and Composer) and activate the extension ````fileinfo```` (uncomment the line ````extension=fileinfo````)
+- Check the versions of the programs, if necessary you should use older versions.
 
 Run ````composer install```` again.
 
